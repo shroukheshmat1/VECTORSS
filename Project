@@ -1,1 +1,31 @@
-.
+#include <bits/stdc++.h>
+using namespace std;
+template<typename T>class SRvector{
+private:
+    T*ptr;
+    int SZ;
+public:
+    SRvector(){
+        SZ =0;
+    };
+    SRvector(int x){
+        ptr=new T[x];
+        SZ =x;
+        for(int i=0;i<SZ;i++){
+            *(ptr+i)=0;
+        }
+    };
+    SRvector(T*,int n){
+        ptr=new T[n];
+        SZ=n;
+        for(int i=0;i<n;i++){
+            *(ptr+i)=*;
+        }
+    }
+    SRvector(const SRvector&obj){
+        SZ=obj.SZ;
+        ptr=new int[SZ]
+
+
+    }
+};
