@@ -4,28 +4,137 @@ template<typename T>class SRvector{
 private:
     T*ptr;
     int SZ;
+    int cap;//capacity
 public:
     SRvector(){
         SZ =0;
     };
-    SRvector(int x){
-        ptr=new T[x];
-        SZ =x;
+    SRvector(int n){
+        ptr=new T[n];
+        SZ =0;
+        cap=n;
         for(int i=0;i<SZ;i++){
-            *(ptr+i)=0;
+            ptr[i]=0;
         }
     };
-    SRvector(T*,int n){
+    SRvector(T* arr,int n){
         ptr=new T[n];
         SZ=n;
         for(int i=0;i<n;i++){
-            *(ptr+i)=*;
+            ptr[i]=arr[i];
         }
     }
-    SRvector(const SRvector&obj){
+    SRvector(const SRvector&obj){//copy constructor
         SZ=obj.SZ;
-        ptr=new int[SZ]
-
+        ptr=new int[SZ];
+        for (int i = 0; i <SZ; i++) {
+            ptr[i]=obj[i];
+        }
 
     }
+    void set(int i, T val) {
+        ptr[i] = val;
+    }
+
+    T get(int i) const {
+        return ptr[i];
+    }
+
+    ~SRvector() {       // destructor
+        delete[] ptr;
+    }
+    SRvector &operator=(const SRvector&obj){// Copy assignment
+        if(this !=&obj){
+            delete this->SZ;
+            delete this->ptr;
+            SZ=obj.SZ;
+            ptr=obj.ptr;
+        }
+        return *this;
+    };
+    SRvector &operator=(const SRvector&&obj){// Move assignment
+        if(this !=&obj){
+            delete this->SZ;
+            delete this->ptr;
+            this->SZ =obj.SZ;
+            obj.SZ= nullptr;
+            obj.ptr= nullptr;
+        }
+    };
+    T& operator[](int ind){
+        T *newptr;
+        if(ind >= cap){
+            newptr= new T[ind + 10];
+            for(int i=0;i<SZ;i++){
+                newptr[i]=ptr[i];
+            }
+            for(int i=SZ;i<ind+10;i++){
+                newptr[i]=0;
+            }
+            cap= ind + 10;
+            delete [] ptr;
+            ptr=newptr;
+        }
+        if(ind>SZ){
+            SZ=ind+1;
+        }
+        return ptr[ind];
+
+    }
+    int push_back(T val){
+        ptr[SZ]=val;
+        SZ++;
+    }
+    T pop_back(){
+        ptr[SZ-1]=0;
+        SZ--;
+        return ptr[SZ-1];
+    }
+    void clear(){
+        for(int i=0; i < cap; i++){
+            ptr[i]=0;
+        }
+        SZ=0;
+    }
+    int size() const{
+        return SZ;
+    }
+    int capacity() const{
+        return cap;
+    }
+    bool empty(){
+        if(SZ==0){
+            return true;
+        }
+    }
+    void resize(int ind){
+        T *newptr;
+        if(ind >= cap){
+            newptr= new T[ind + 10];
+            for(int i=0;i<SZ;i++){
+                newptr[i]=ptr[i];
+            }
+            for(int i=SZ;i<ind+10;i++){
+                newptr[i]=0;
+            }
+            cap= ind + 10;
+            delete [] ptr;
+            ptr=newptr;
+        }
+        if(ind>SZ){
+            SZ=ind+1;
+        }
+    }
 };
+int main(){
+    int num;
+    cin>>num;
+    int ar[]={1,2,3,4};
+    SRvector<int> obj1(ar,num);
+    obj1.push_back(0);
+    for(int i=0;i<obj1.size();i++){
+        cout<<obj1[i]<<" ";
+    }
+    cout<<endl;
+    cout<<obj1.size();
+}
